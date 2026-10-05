@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Registration Portal</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #d1fae5, #dbeafe);
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #065f46;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #94a3b8;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .password-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #047857;
+        }
+
+        #successMessage {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #dcfce7;
+            color: #166534;
+            text-align: center;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+    <h1>Employee Registration Portal</h1>
+
+    <p class="subtitle">
+        Register as an employee by entering valid information
+    </p>
+
+
+    <form id="employeeForm" novalidate>
+
+
+        <!-- EMPLOYEE ID -->
+
+        <div class="form-group">
+
+            <label for="employeeId">
+                Employee ID *
+            </label>
+
+            <input
+                type="text"
+                id="employeeId"
+                placeholder="Example: EMP1001"
+            >
+
+            <span
+                id="employeeIdError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <!-- NAME -->
+
+        <div class="form-group">
+
+            <label for="name">
+                Full Name *
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter full name"
+            >
+
+            <span
+                id="nameError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+            <label for="email">
+                Email Address *
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="employee@example.com"
+            >
+
+            <span
+                id="emailError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <!-- MOBILE -->
+
+        <div class="form-group">
+
+            <label for="mobile">
+                Mobile Number *
+            </label>
+
+            <input
+                type="tel"
+                id="mobile"
+                maxlength="10"
+                placeholder="10 digit mobile number"
+            >
+
+            <span
+                id="mobileError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <!-- DEPARTMENT -->
+
+        <div class="form-group">
+
+            <label for="department">
+                Department *
+            </label>
+
+            <select id="department">
+
+                <option value="">
+                    -- Select Department --
+                </option>
+
+                <option value="IT">
+                    IT
+                </option>
+
+                <option value="HR">
+                    Human Resources
+                </option>
+
+                <option value="Finance">
+                    Finance
+                </option>
+
+                <option value="Marketing">
+                    Marketing
+                </option>
+
+                <option value="Sales">
+                    Sales
+                </option>
+
+            </select>
+
+            <span
+                id="departmentError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <!-- SALARY -->
+
+        <div class="form-group">
+
+            <label for="salary">
+                Monthly Salary *
+            </label>
+
+            <input
+                type="number"
+                id="salary"
+                placeholder="Enter monthly salary"
+                min="1000"
+            >
+
+            <span
+                id="salaryError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+            <label for="password">
+                Password *
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Create password"
+            >
+
+            <p class="password-info">
+                Password must contain at least 8 characters,
+                one uppercase letter, one lowercase letter,
+                one number and one special character.
+            </p>
+
+            <span
+                id="passwordError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="form-group">
+
+            <label for="confirmPassword">
+                Confirm Password *
+            </label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Re-enter password"
+            >
+
+            <span
+                id="confirmPasswordError"
+                class="error">
+            </span>
+
+        </div>
+
+
+
+        <button type="submit">
+            Register Employee
+        </button>
+
+
+        <div id="successMessage">
+            Employee registration completed successfully!
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<script>
+
+    document
+        .getElementById("employeeForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            let valid = true;
+
+
+            // Clear errors
+            document.querySelectorAll(".error")
+                .forEach(function(error) {
+
+                    error.innerText = "";
+
+                });
+
+
+            // Employee ID
+            let employeeId =
+                document.getElementById("employeeId")
+                .value.trim();
+
+
+            let employeeIdPattern =
+                /^EMP[0-9]{4}$/;
+
+
+            if (!employeeIdPattern.test(employeeId)) {
+
+                document.getElementById(
+                    "employeeIdError"
+                ).innerText =
+                    "Employee ID must be like EMP1001.";
+
+                valid = false;
+
+            }
+
+
+
+            // Name
+            let name =
+                document.getElementById("name")
+                .value.trim();
+
+
+            if (name === "") {
+
+                document.getElementById("nameError")
+                    .innerText =
+                    "Full name is required.";
+
+                valid = false;
+
+            }
+
+
+
+            // Email
+            let email =
+                document.getElementById("email")
+                .value.trim();
+
+
+            let emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+            if (!emailPattern.test(email)) {
+
+                document.getElementById("emailError")
+                    .innerText =
+                    "Enter a valid email address.";
+
+                valid = false;
+
+            }
+
+
+
+            // Mobile
+            let mobile =
+                document.getElementById("mobile")
+                .value.trim();
+
+
+            let mobilePattern =
+                /^[0-9]{10}$/;
+
+
+            if (!mobilePattern.test(mobile)) {
+
+                document.getElementById("mobileError")
+                    .innerText =
+                    "Mobile number must contain exactly 10 digits.";
+
+                valid = false;
+
+            }
+
+
+
+            // Department
+            let department =
+                document.getElementById("department")
+                .value;
+
+
+            if (department === "") {
+
+                document.getElementById(
+                    "departmentError"
+                ).innerText =
+                    "Please select a department.";
+
+                valid = false;
+
+            }
+
+
+
+            // Salary
+            let salary =
+                document.getElementById("salary")
+                .value;
+
+
+            if (
+                salary === "" ||
+                Number(salary) < 1000
+            ) {
+
+                document.getElementById("salaryError")
+                    .innerText =
+                    "Salary must be at least 1000.";
+
+                valid = false;
+
+            }
+
+
+
+            // Password
+            let password =
+                document.getElementById("password")
+                .value;
+
+
+            let passwordPattern =
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+
+
+            if (!passwordPattern.test(password)) {
+
+                document.getElementById(
+                    "passwordError"
+                ).innerText =
+                    "Password does not meet the required conditions.";
+
+                valid = false;
+
+            }
+
+
+
+            // Confirm Password
+            let confirmPassword =
+                document.getElementById("confirmPassword")
+                .value;
+
+
+            if (confirmPassword !== password) {
+
+                document.getElementById(
+                    "confirmPasswordError"
+                ).innerText =
+                    "Passwords do not match.";
+
+                valid = false;
+
+            }
+
+
+
+            // Successful submission
+            if (valid) {
+
+                document.getElementById(
+                    "successMessage"
+                ).style.display = "block";
+
+
+                document.getElementById(
+                    "employeeForm"
+                ).reset();
+
+            }
+
+        });
+
+</script>
+
+
+</body>
+
+</html>

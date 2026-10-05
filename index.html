@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityCare Patient Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef4f8;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      width: 600px;
+      max-width: 550px;
+      margin: auto;
+      padding: 25px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px #bbb;
+    }
+    h1 { 
+        text-align: center; 
+        color: #167a8b;
+    }
+    h3 {
+            color: #167a8b;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid #087e8b;
+    }
+    .error {
+      color: #c62828;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .success {
+      color: #15803d;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 15px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background: #167a8b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { background: #105d69; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CityCare Hospital</h1>
+    <h2>Patient Registration Form</h2>
+ 
+    <form id="patientForm" novalidate>
+
+        <h3>Personal Information</h3>
+      <label for="name">Patient Name *</label>
+      <input type="text" id="name" placeholder="Enter full name"
+             autocomplete="name">
+      <div class="error" id="nameError" aria-live="polite"></div>
+ 
+      <label for="email">Email Address *</label>
+      <input type="text" id="email" placeholder="example@gmail.com"
+             autocomplete="email">
+      <div class="error" id="emailError" aria-live="polite"></div>
+ 
+      <label for="mobile">Mobile Number *</label>
+      <input type="text" id="mobile" placeholder="10-digit mobile number"
+             inputmode="numeric" maxlength="10" autocomplete="tel-national">
+      <div class="error" id="mobileError" aria-live="polite"></div>
+ 
+      <label for="dob">Date of Birth *</label>
+      <input type="date" id="dob">
+      <div class="error" id="dobError" aria-live="polite"></div>
+
+      <label for="gender">Gender *</label>
+      <select id="gender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+        <option value="Prefer not to say">Prefer not to say</option>
+      </select>
+      <div class="error" id="genderError" aria-live="polite"></div>
+
+       <h3>Medical Information</h3>
+
+        <label for="department">Department</label>
+        <select id="department" required>
+            <option value="">-- Select Department --</option>
+            <option value="General Medicine">General Medicine</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Dermatology">Dermatology</option>
+        </select>
+        <span id="departmentError" class="error"></span>
+
+
+        <label for="appointment">Appointment Date</label>
+        <input type="date" id="appointment" required>
+        <span id="appointmentError" class="error"></span>
+
+
+        <label for="message">Symptoms / Additional Information</label>
+        <textarea id="message"
+                  rows="4"
+                  maxlength="200"
+                  placeholder="Enter your symptoms"></textarea>
+
+
+      <label for="address">Address *</label>
+      <textarea id="address" rows="3" placeholder="Enter your address"></textarea>
+      <div class="error" id="addressError" aria-live="polite"></div>
+
+      <h3>Account Information</h3>
+      <label for="password">Password *</label>
+      <input type="password" id="password" placeholder="Create a password"
+             autocomplete="new-password">
+      <div class="error" id="passwordError" aria-live="polite"></div>
+ 
+      <label for="confirmPassword">Confirm Password *</label>
+      <input type="password" id="confirmPassword"
+             placeholder="Re-enter password" autocomplete="new-password">
+      <div class="error" id="confirmError" aria-live="polite"></div>
+
+      <label for="document">Upload Medical Document</label>
+        <input type="file"
+               id="document"
+               accept=".pdf,.jpg,.jpeg,.png"
+               required>
+        <span id="documentError" class="error"></span>
+
+
+        <label>
+            <input type="checkbox" id="terms">
+            I agree to the hospital terms and conditions.
+        </label>
+        <span id="termsError" class="error"></span>
+
+
+        <button type="submit">Register Patient</button>
+
+        <p id="successMessage"></p>
+
+    </form>
+  </div>
+ 
+  <script>
+    const form = document.getElementById("patientForm");
+ 
+    // Display an error message for a field.
+    function showError(id, message) {
+      document.getElementById(id + "Error").textContent = message;
+    }
+ 
+    // Clear previous errors and the status message.
+    function clearErrors() {
+      document.querySelectorAll(".error").forEach(function (el) {
+        el.textContent = "";
+      });
+      document.getElementById("result").textContent = "";
+    }
+    //Name Validation.
+    function validateName() {
+      const name = document.getElementById("name").value.trim();
+      const pattern = /^[A-Za-z][A-Za-z .'-]{1,49}$/;
+      if (name === "") {
+        showError("name", "Patient name is required.");
+        return false;
+      }
+      if (!pattern.test(name)) {
+        showError("name", "Enter a valid name (2–50 characters).");
+        return false;
+      }
+      return true;
+    }
+     // Email Validation.
+    function validateEmail() {
+      const email = document.getElementById("email").value.trim();
+      const pattern =
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      if (email === "") {
+        showError("email", "Email is required.");
+        return false;
+      }
+      if (!pattern.test(email)) {
+        showError("email", "Enter a valid email address.");
+        return false;
+      }
+      return true;
+    }
+    //Mobile Vadidation.
+    function validateMobile() {
+      const mobile = document.getElementById("mobile").value.trim();
+      const pattern = /^[6-9][0-9]{9}$/;
+      if (mobile === "") {
+        showError("mobile", "Mobile number is required.");
+        return false;
+      }
+      if (!pattern.test(mobile)) {
+        showError("mobile",
+          "Enter a valid 10-digit Indian mobile number.");
+        return false;
+      }
+      return true;
+    }
+    // DOB Validation.
+    function validateDOB() {
+      const dob = document.getElementById("dob").value;
+      if (dob === "") {
+        showError("dob", "Date of birth is required.");
+        return false;
+      }
+      const selectedDate = new Date(dob + "T00:00:00");
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (Number.isNaN(selectedDate.getTime()) ||
+          selectedDate > today) {
+        showError("dob", "Date of birth cannot be in the future.");
+        return false;
+      }
+      return true;
+    }
+    // Gender Validation.
+    function validateGender() {
+      const gender = document.getElementById("gender").value;
+      if (gender === "") {
+        showError("gender", "Please select your gender.");
+        return false;
+      }
+      return true;
+    }
+    // DEPARTMENT VALIDATION.
+        let department = document.getElementById("department").value;
+
+        if (department === "") {
+            document.getElementById("departmentError").textContent =
+                "Please select a department.";
+            valid = false;
+        }
+    // APPOINTMENT DATE.
+
+        let appointment =
+            document.getElementById("appointment").value;
+
+        if (appointment === "") {
+            document.getElementById("appointmentError").textContent =
+                "Please select appointment date.";
+            valid = false;
+        }
+    // Address Validation.
+    function validateAddress() {
+      const address =
+        document.getElementById("address").value.trim();
+      if (address === "") {
+        showError("address", "Address is required.");
+        return false;
+      }
+      if (address.length < 5 || address.length > 200) {
+        showError("address",
+          "Address must contain 5–200 characters.");
+        return false;
+      }
+      return true;
+    }
+    // Password Validation.
+    function validatePassword() {
+      const password = document.getElementById("password").value;
+      const pattern =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9\s])\S{8,64}$/;
+      if (password === "") {
+        showError("password", "Password is required.");
+        return false;
+      }
+      if (!pattern.test(password)) {
+        showError("password",
+          "Use 8–64 characters with uppercase, lowercase, " +
+          "a number and a special character.");
+        return false;
+      }
+      return true;  
+    }
+    //Confirm Password Validation.
+    function validateConfirmPassword() {
+      const password = document.getElementById("password").value;
+      const confirm =
+        document.getElementById("confirmPassword").value;
+      if (confirm === "") {
+        showError("confirm", "Please confirm your password.");
+        return false;
+      }
+      if (password !== confirm) {
+        showError("confirm", "Passwords do not match.");
+        return false;
+      }
+      return true;
+    }
+     // FILE VALIDATION.
+
+        let documentFile =
+            document.getElementById("document").files[0];
+
+        if (!documentFile) {
+
+            document.getElementById("documentError").textContent =
+                "Please upload a medical document.";
+
+            valid = false;
+        }
+        else {
+              let allowedTypes = [
+                "application/pdf",
+                "image/jpeg",
+                "image/png"
+            ];
+
+            if (!allowedTypes.includes(documentFile.type)) {
+
+                document.getElementById("documentError").textContent =
+                    "Only PDF, JPG and PNG files are allowed.";
+
+                valid = false;
+            }
+        }
+     //  TERMS VALIDATION.
+        let terms = document.getElementById("terms").checked;
+
+        if (!terms) {
+
+            document.getElementById("termsError").textContent =
+                "You must agree to the terms and conditions.";
+
+            valid = false;
+        }
+    // FINAL RESULT.
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      clearErrors();
+ 
+      const isValid = [
+        validateName(),
+        validateEmail(),
+        validateMobile(),
+        validateDOB(),
+        validateGender(),
+        validateAddress(),
+        validatePassword(),
+        validateConfirmPassword()
+      ].every(Boolean);
+ 
+      if (isValid) {
+        document.getElementById("result").textContent =
+          "Registration form validated successfully!";
+        // Demonstration only: no data is sent or stored.
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
